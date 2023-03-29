@@ -2,7 +2,7 @@ from fastapi import FastAPI, Request, HTTPException
 import os
 import openai
 from telegram import Update, Bot
-from telegram.ext import Dispatcher, MessageHandler, Filters, CallbackContext
+from telegram.ext import Dispatcher, MessageHandler, filters, CallbackContext
 
 app = FastAPI()
 
