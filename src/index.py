@@ -1,13 +1,8 @@
+from telegram import Update, Bot
+from telegram.ext import Dispatcher, MessageHandler, Filters, CallbackContext
 from fastapi import FastAPI, Request, HTTPException
 import os
 import openai
-from telegram import Update, Bot
-from telegram.ext import (
-    Dispatcher,
-    MessageHandler,
-    filters,
-    CallbackContext
-)
 
 app = FastAPI()
 
@@ -58,5 +53,5 @@ async def webhook_handler(request: Request):
         dp.process_update(update)
         return 'ok'
 
-#if __name__ == '__main__':
-    #app.run(debug=True)
+if __name__ == '__main__':
+    app.run(debug=True)
