@@ -1,12 +1,36 @@
-from telegram import Update, Bot
-from telegram.ext import Dispatcher, MessageHandler, Filters
-from fastapi import FastAPI, Request, HTTPException
-from fastapi.responses import JSONResponse
+#from telegram import Update, Bot
+#from telegram.ext import Dispatcher, MessageHandler, Filters
+#from fastapi import FastAPI, Request, HTTPException
+#from fastapi.responses import JSONResponse
 import os
 import openai
 
+import httpx
+from fastapi import FastAPI, Request
+
+
+TOKEN = str(os.getenv("TELEGRAM_BOT_TOKEN"))
+BASE_URL = f"https://api.telegram.org/bot{TOKEN}"
+
+client = httpx.AsyncClient()
+
 app = FastAPI()
 
+@app.post("/callback/")
+async def webhook(req: Request):
+    data = await req.json()
+    chat_id = data['message']['chat']['id']
+    text = data['message']['text']
+
+    await client.get(f"{BASE_URL}/sendMessage?chat_id={chat_id}&text={text}")
+
+    return data
+
+
+
+
+
+'''
 openai.api_key = os.getenv("OPENAI_API_KEY")
 conversation = []
 
@@ -62,3 +86,4 @@ dp.add_handler(MessageHandler(filters.text, reply_handler))
 
 if __name__ == '__main__':
     app.run(debug=True)
+    '''
