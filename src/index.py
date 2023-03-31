@@ -24,8 +24,8 @@ class ChatGPT:
         conversation.append({"role": "user", "content": user_input})
         response = openai.Completion.create(
             engine=self.model,
-            prompt=self._format_messages(self.messages) + user_input,
-            max_tokens=60,
+            #prompt=self._format_messages(self.messages) + user_input,
+            max_tokens=300,
         )
         conversation.append({"role": "assistant", "content": response["choices"][0]["text"]})
         return response["choices"][0]["text"].strip()
