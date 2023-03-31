@@ -15,20 +15,34 @@ app = FastAPI()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 conversation = []
 
-class ChatGPT:
+class ChatGPT:  
+    
+
     def __init__(self):
+        
         self.messages = conversation
-        self.model = os.getenv("OPENAI_MODEL", default="gpt-3.5-turbo")
+        self.model = os.getenv("OPENAI_MODEL", default = "gpt-3.5-turbo")
+
+
 
     def get_response(self, user_input):
         conversation.append({"role": "user", "content": user_input})
-        response = openai.Completion.create(
-            engine=self.model,
-            #prompt=self._format_messages(self.messages) + user_input,
-            max_tokens=300,
-        )
-        conversation.append({"role": "assistant", "content": response["choices"][0]["text"]})
-        return response["choices"][0]["text"].strip()
+        
+
+        response = openai.ChatCompletion.create(
+	            model=self.model,
+                messages = self.messages
+
+                )
+
+        conversation.append({"role": "assistant", "content": response['choices'][0]['message']['content']})
+        
+        print("AI回答內容：")        
+        print(response['choices'][0]['message']['content'].strip())
+
+
+        
+        return response['choices'][0]['message']['content'].strip()
 
 chatgpt = ChatGPT()
   
