@@ -2,6 +2,7 @@ from telegram import Update, Bot
 from telegram.ext import MessageHandler, filters
 from telegram import Dispatcher, CallbackContext
 from fastapi import FastAPI, Request, HTTPException
+from fastapi.responses import JSONResponse
 import os
 import openai
 
@@ -46,13 +47,13 @@ def reply_handler(update: Update, context: CallbackContext):
     update.message.reply_text(ai_reply_response)
 
 dp = Dispatcher(bot, None)
-dp.add_handler(MessageHandler(Filters.text, reply_handler))
+dp.add_handler(MessageHandler(filters.text, reply_handler))
 
 async def webhook_handler(request: Request):
     if request.method == 'POST':
         update = Update.de_json(await request.json(), bot)
-        dp.process_update(update)
-        return 'ok'
+        await dp.process_update(update)
+        return JSONResponse({'status': 'ok'})
 
 if __name__ == '__main__':
     app.run(debug=True)
