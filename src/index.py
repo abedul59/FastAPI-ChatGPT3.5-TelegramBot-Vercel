@@ -1,6 +1,5 @@
 from telegram import Update, Bot
 from telegram.ext import Dispatcher, MessageHandler, Filters
-from telegram import 
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.responses import JSONResponse
 import os
